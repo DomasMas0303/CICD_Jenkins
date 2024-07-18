@@ -41,8 +41,8 @@ pipeline {
                     def imageName = env.BRANCH_NAME == 'main' ? 'nodemain' : 'nodedev'
                     
                     // stop and remove any containers using the required port
-                    sh "sudo docker ps -q --filter publish=${port} | xargs -r sudo docker stop"
-                    sh "sudo docker ps -aq --filter publish=${port} | xargs -r sudo docker rm"
+                    sh "docker ps -q --filter publish=${port} | xargs -r docker stop"
+                    sh "docker ps -aq --filter publish=${port} | xargs -r docker rm"
 
                     // stop and remove existing containers for this branch
                     sh "docker ps -q --filter ancestor=${imageName}:v1.0 | xargs -r docker stop"

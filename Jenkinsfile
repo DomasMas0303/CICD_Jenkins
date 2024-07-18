@@ -52,8 +52,9 @@ pipeline {
             steps {
                 script {
                     def jobName = env.BRANCH_NAME == 'main' ? 'Deploy_to_main' : 'Deploy_to_dev'
+                    def imageTag = env.BRANCH_NAME == 'main' ? 'nodemain-v1.0' : 'nodedev-v1.0'
                     build job: jobName, parameters: [
-                        string(name: 'IMAGE_TAG', value: "${env.BRANCH_NAME == 'main' ? 'nodemain' : 'nodedev'}-v1.0")
+                        string(name: 'IMAGE_TAG', value: imageTag)
                     ]
                 }
             }

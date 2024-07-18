@@ -48,31 +48,13 @@ pipeline {
             }
         }
         
-<<<<<<< HEAD
-        stage('Deploy') {
-            steps {
-                script {
-                    def port = env.BRANCH_NAME == 'main' ? '3000' : '3001'
-                    def imageName = env.BRANCH_NAME == 'main' ? 'nodemain' : 'nodedev'
-                    
-                    // Stop and remove existing containers for this branch
-                    sh "docker ps -q --filter publish=${port} | xargs -r docker stop"
-                    sh "docker ps -aq --filter publish=${port} | xargs -r docker rm"
-                    
-                    // Run new container
-                    sh "docker run -d --expose ${port} -p ${port}:3000 domasm97/domasm:${imageName}-v1.0"
-                }
-            }
-        }
-        
-=======
->>>>>>> 5f52876 (removed deploy stage)
         stage('Trigger Deployment') {
             steps {
                 script {
                     def jobName = env.BRANCH_NAME == 'main' ? 'Deploy_to_main' : 'Deploy_to_dev'
+                    def imageTag = env.BRANCH_NAME == 'main' ? 'nodemain-v1.0' : 'nodedev-v1.0'
                     build job: jobName, parameters: [
-                        string(name: 'IMAGE_TAG', value: "${env.BRANCH_NAME == 'main' ? 'nodemain' : 'nodedev'}-v1.0")
+                        string(name: 'IMAGE_TAG', value: imageTag)
                     ]
                 }
             }

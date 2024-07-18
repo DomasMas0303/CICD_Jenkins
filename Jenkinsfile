@@ -54,7 +54,6 @@ pipeline {
                     def port = env.BRANCH_NAME == 'main' ? '3000' : '3001'
                     def imageName = env.BRANCH_NAME == 'main' ? 'nodemain' : 'nodedev'
                     
-<<<<<<< HEAD
                     // stop and remove any containers using the required port
                     sh "docker ps -q --filter publish=${port} | xargs -r docker stop"
                     sh "docker ps -aq --filter publish=${port} | xargs -r docker rm"
@@ -62,11 +61,10 @@ pipeline {
                     // stop and remove existing containers for this branch
                     sh "docker ps -q --filter ancestor=${imageName}:v1.0 | xargs -r docker stop"
                     sh "docker ps -aq --filter ancestor=${imageName}:v1.0 | xargs -r docker rm"
-=======
+
                     // Stop and remove existing containers for this branch
                     sh "docker ps -q --filter publish=${port} | xargs -r docker stop"
                     sh "docker ps -aq --filter publish=${port} | xargs -r docker rm"
->>>>>>> 19a7dc4 (Added push stage to DockerHub and Manual Jenkinsfile)
                     
                     // Run new container
                     sh "docker run -d --expose ${port} -p ${port}:3000 domasm97/domasm:${imageName}-v1.0"

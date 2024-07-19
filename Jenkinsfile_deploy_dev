@@ -9,16 +9,15 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    def port = env.JOB_NAME == 'Deploy_to_main' ? '3000' : '3001'
-                    def imageName = env.JOB_NAME == 'Deploy_to_main' ? 'nodemain' : 'nodedev'
+                    def port = '3001'
                     
                     // Stop and remove existing containers
                     sh "docker ps -q --filter publish=${port} | xargs -r docker stop"
                     sh "docker ps -aq --filter publish=${port} | xargs -r docker rm"
                     
                     // Pull and run new container
-                    sh "docker pull domasm97/domasm:${imageName}-${params.IMAGE_TAG}"
-                    sh "docker run -d --expose ${port} -p ${port}:3000 domasm97/domasm:${imageName}-${params.IMAGE_TAG}"
+                    sh "docker pull domasm97/domasm:${params.IMAGE_TAG}"
+                    sh "docker run -d --expose ${port} -p ${port}:3000 domasm97/domasm:${params.IMAGE_TAG}"
                 }
             }
         }
